@@ -81,26 +81,32 @@ class NodeGroup extends Component {
         nextKeyIndex,
       )
 
+      const mergedNodes = mergedNodeKeys.map(key => nodeHash[key])
+      const mergedData = mergedNodes.map(node => node.data)
+
       for (let i = 0; i < mergedNodeKeys.length; i++) {
         const k = mergedNodeKeys[i]
         const n = nodeHash[k]
         const d = n.data
 
+        const merged = {
+          index: i,
+          data: mergedData
+        }
+
         if (n.type === ENTER) {
-          n.setState(start(d, nextKeyIndex[k]))
-          n.transition(enter(d, nextKeyIndex[k]))
+          n.setState(start(d, nextKeyIndex[k], merged))
+          n.transition(enter(d, nextKeyIndex[k], merged))
         } else if (n.type === LEAVE) {
-          n.transition(leave(d, keyIndex[k]))
+          n.transition(leave(d, keyIndex[k], merged))
         } else {
-          n.transition(update(d, nextKeyIndex[k]))
+          n.transition(update(d, nextKeyIndex[k], merged))
         }
       }
 
       return {
         data,
-        nodes: mergedNodeKeys.map(key => {
-          return nodeHash[key]
-        }),
+        nodes: mergedNodes,
         nodeHash,
         nodeKeys: mergedNodeKeys,
       }
