@@ -177,7 +177,6 @@ class ResponsiveDrawer extends React.Component {
             </Typography>
             <Link
               style={{ color: 'inherit' }}
-              style={{ color: 'inherit' }}
               to="/"
             >
               <IconButton color="inherit">
